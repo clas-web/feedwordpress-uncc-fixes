@@ -1,0 +1,33 @@
+
+div.fwp_uncc_thumbnail
+{
+	float: right;
+}
+
+div.fwp_uncc_thumbnail img
+{
+	max-width: 200px;
+	max-height: 200px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+div.fwp_uncc_excerpt
+{
+}
+
+
+div.fwp_uncc_thumbnail:after,
+div.fwp_uncc_excerpt:after {
+	visibility: hidden;
+	display: block;
+	content: "";
+	clear: both;
+	height: 0;
+	}
+* html div.fwp_uncc_thumbnail,
+* html div.fwp_uncc_excerpt { 
+	zoom: 1; } /* IE6 */
+*:first-child+html div.fwp_uncc_thumbnail,
+*:first-child+html div.fwp_uncc_excerpt { 
+	zoom: 1; } /* IE7 */

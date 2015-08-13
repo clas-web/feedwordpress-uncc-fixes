@@ -1,30 +1,38 @@
 <?php
 /*
 Plugin Name: FeedWordPress: UNCC Fixes
-Plugin URI: 
+Plugin URI: https://github.com/clas-web/feedwordpress-uncc-fixes
 Description: Includes changes to FeedWordPress to add UNCC fixes, such as thumbnails and other excerpt creation changes.
 Version: 1.0
 Author: Crystal Barton
-Author URI: http://clas-pages.uncc.edu/
+Author URI: https://www.linkedin.com/in/crystalbarton
 */
 
 
-
-//----------------------------------------------------------------------------------------
-// Remove the Translucence "get_the_excerpt" filter.
-//----------------------------------------------------------------------------------------
 add_action( 'after_setup_theme', 'fwp_uncc_fixes_setup' );
+add_filter( 'get_the_excerpt', 'fwp_uncc_fixes_get_the_excerpt' );
+add_filter( 'syndicated_post', 'fwp_uncc_fixes_save_post_thumbnail', 2, 2 );
+add_filter( 'syndicated_post', 'fwp_uncc_fixes_create_excerpt', 10, 2 );
+add_action( 'wp_head', 'fwp_uncc_fixes_build_stylesheet_url' );
+
+
+/**
+ * Remove the Translucence "get_the_excerpt" filter.
+ */
+if( !function_exists('fwp_uncc_fixes_setup') ):
 function fwp_uncc_fixes_setup() 
 {
 	remove_filter( 'get_the_excerpt', 'translucence_get_the_excerpt' );
 }
+endif;
 
 
-
-//----------------------------------------------------------------------------------------
-// Add a new "get_the_excerpt" filter to include post thumbnail.
-//----------------------------------------------------------------------------------------
-add_filter( 'get_the_excerpt', 'fwp_uncc_fixes_get_the_excerpt' );
+/**
+ * Add a new "get_the_excerpt" filter to include post thumbnail.
+ * @param  string  $excerpt  The current excerpt.
+ * @return  string  The modified excerpt.
+ */
+if( !function_exists('fwp_uncc_fixes_get_the_excerpt') ):
 function fwp_uncc_fixes_get_the_excerpt( $excerpt )
 {
 	global $post;
@@ -41,15 +49,18 @@ function fwp_uncc_fixes_get_the_excerpt( $excerpt )
 
 	return $excerpt;
 }
+endif;
 
 
-
-//----------------------------------------------------------------------------------------
-// Add "syndicated_post" filter found in the FeedWordPress plugin.
-// Grab the first image in the content and save as the post's thumbnail.
-//----------------------------------------------------------------------------------------
-add_filter('syndicated_post', 'fwp_uncc_fixes_save_post_thumbnail', 2, 2);
-function fwp_uncc_fixes_save_post_thumbnail($post, $syndicatedpost)
+/**
+ * Add "syndicated_post" filter found in the FeedWordPress plugin.
+ * Grab the first image in the content and save as the post's thumbnail.
+ * @param  WP_Post  $post  The post object.
+ * @param  SyndicatedPost  $syndicatedpost  The FeedWordPress syndicated post.
+ * @return  WP_Post  The modified post object.
+ */
+if( !function_exists('fwp_uncc_fixes_save_post_thumbnail') ):
+function fwp_uncc_fixes_save_post_thumbnail( $post, $syndicatedpost )
 {
 
 	$content = '';
@@ -115,15 +126,18 @@ function fwp_uncc_fixes_save_post_thumbnail($post, $syndicatedpost)
 	
 	return $post;
 }
+endif;
 
 
-
-//----------------------------------------------------------------------------------------
-// Add "syndicated_post" filter found in the FeedWordPress plugin.
-// Create a custom excerpt for the FeedWordPress post.
-// * Copied and altered from Advanced Excerpt plugin
-//----------------------------------------------------------------------------------------
-add_filter('syndicated_post', 'fwp_uncc_fixes_create_excerpt', 10, 2);
+/**
+ * Add "syndicated_post" filter found in the FeedWordPress plugin.
+ * Create a custom excerpt for the FeedWordPress post.
+ * -- Copied and altered from Advanced Excerpt plugin --
+ * @param  WP_Post  $post  The post object.
+ * @param  SyndicatedPost  $syndicatedpost  The FeedWordPress syndicated post.
+ * @return  WP_Post  The modified post object.
+ */
+if( !function_exists('fwp_uncc_fixes_create_excerpt') ):
 function fwp_uncc_fixes_create_excerpt($post, $syndicatedpost)
 {
 
@@ -224,14 +238,16 @@ function fwp_uncc_fixes_create_excerpt($post, $syndicatedpost)
     $post['post_excerpt'] = $out;
     return $post;
 }
+endif;
 
 
-
-//----------------------------------------------------------------------------------------
-// Add the plugin's custom stylesheet.
-//----------------------------------------------------------------------------------------
-add_action( 'wp_head', 'fwp_uncc_fixes_build_stylesheet_url' );
+/**
+ * Add the plugin's custom stylesheet.
+ */
+if( !function_exists('fwp_uncc_fixes_build_stylesheet_url') ):
 function fwp_uncc_fixes_build_stylesheet_url()
 {
     echo '<link rel="stylesheet" href="' . plugin_dir_url( __FILE__ ) . 'styles.css" />';
 }
+endif;
+

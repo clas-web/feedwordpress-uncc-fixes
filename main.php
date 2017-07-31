@@ -3,9 +3,10 @@
 Plugin Name: FeedWordPress: UNCC Fixes
 Plugin URI: https://github.com/clas-web/feedwordpress-uncc-fixes
 Description: Includes changes to FeedWordPress to add UNCC fixes, such as thumbnails and other excerpt creation changes.
-Version: 1.0
+Version: 1.1.0
 Author: Crystal Barton
 Author URI: https://www.linkedin.com/in/crystalbarton
+GitHub Plugin URI: https://github.com/clas-web/feedwordpress-uncc-fixes
 */
 
 
